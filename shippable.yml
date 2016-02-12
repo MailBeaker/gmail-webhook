@@ -1,0 +1,26 @@
+# Build Environment
+build_environment: Ubuntu 14.04
+
+# Language
+language: python
+
+python:
+  - 3.4
+
+env:
+  global:
+    - APP_NAME=mb-gmail-webhook-dev
+
+install:
+  - pip install -r requirements_dev.txt
+
+before_script:
+  - mkdir -p shippable/codecoverage
+  - mkdir -p shippable/testresults
+  - cp settingslocal.py.test settingslocal.py
+
+script:
+  - nose2
+
+after_success:
+  - git push git@heroku.com:$APP_NAME.git master
